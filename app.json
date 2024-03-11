@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "fuel-log",
+    "name": "Fuel Log",
     "slug": "fuel-log",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.webp",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo.webp",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#010322"
     },
     "assetBundlePatterns": [
       "**/*"
