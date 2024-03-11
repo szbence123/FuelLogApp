@@ -47,12 +47,21 @@ export const getAllFuelInfo = (
 
 export const getAllFuelPricesForChart = (
   carId: number,
-  year: string
+  year: string,
+  start: string,
+  end: string
 ): Promise<FuelInfoModel[]> => {
-  console.log(carId, year);
+  if (start && end) {
+    console.log(start, end);
+    return executeQuery(
+      db,
+      "SELECT SUM(price) as price, DATE(date) as date FROM FUELINFO WHERE car_id = ? AND date BETWEEN  ?  AND  ? GROUP BY DATE(date)",
+      [carId, start, end]
+    );
+  }
   return executeQuery(
     db,
-    "SELECT SUM(price) as price, DATE(date) FROM FUELINFO WHERE car_id = ? AND strftime('%Y', date) = ? GROUP BY DATE(date)",
+    "SELECT SUM(price) as price, DATE(date) as date FROM FUELINFO WHERE car_id = ? AND strftime('%Y', date) = ? GROUP BY DATE(date)",
     [carId, year]
   );
 };

@@ -154,7 +154,12 @@ export default function FuelInfosPage({ route }) {
         </Tabs.Content>
         <Tabs.Content value="tab2">
           <ScrollView>
-            <Charts selectedYear={selectedYear} route={route} />
+            <Charts
+              start={moment(startDate).format("YYYY-MM-DD")}
+              end={moment(endDate).format("YYYY-MM-DD")}
+              selectedYear={selectedYear}
+              route={route}
+            />
           </ScrollView>
         </Tabs.Content>
       </Tabs>
