@@ -15,9 +15,9 @@ export const executeQuery = <T>(
           console.log(data);
           resolve(data);
         },
-        (error) => {
-          console.log("SQL Error", error);
-          reject(false);
+        (error, errorObject) => {
+          console.log("SQL Error", errorObject);
+          reject(errorObject);
           return false;
         }
       );

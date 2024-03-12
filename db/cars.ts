@@ -1,8 +1,7 @@
-import * as SQLite from "expo-sqlite";
 import { CarModel } from "../typedefs/cars";
 import { executeQuery } from "./QueryBuilder";
+import { db } from "./db";
 
-const db = SQLite.openDatabase("fuel-log.db");
 export const insertCar = (name: string, regNumber: string) => {
   return executeQuery<CarModel[]>(
     db,

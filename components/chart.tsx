@@ -27,7 +27,9 @@ export default function Charts({ route, selectedYear, start, end }) {
   useEffect(() => {
     refetch();
   }, [selectedYear]);
-  return (
+  return isLoading ? (
+    <LoadingCard />
+  ) : (
     <ScrollView>
       {data && data.length > 0 ? (
         <YStack padding={10} width="100%">

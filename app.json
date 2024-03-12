@@ -7,9 +7,9 @@
     "icon": "./assets/logo.webp",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/logo.webp",
+      "image": "./assets/splashcar.jpg",
       "resizeMode": "contain",
-      "backgroundColor": "#010322"
+      "backgroundColor": "white"
     },
     "assetBundlePatterns": [
       "**/*"

@@ -1,8 +1,6 @@
-import * as SQLite from "expo-sqlite";
 import { FuelInfoModel } from "../typedefs/cars";
 import { executeQuery } from "./QueryBuilder";
-
-const db = SQLite.openDatabase("fuel-log.db");
+import { db } from "./db";
 
 export const insertFuelInfo = (
   date: string,

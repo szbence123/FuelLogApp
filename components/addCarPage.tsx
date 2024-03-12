@@ -36,7 +36,19 @@ export default function AddCarPage({ refetch, last = false, isEdit = false }) {
   return (
     <Modal
       title="Autó hozzáadása"
-      openBtn={<AddButton />}
+      openBtn={
+        <Button
+          margin="auto"
+          size={80}
+          alignSelf="center"
+          icon={Plus}
+          backgroundColor={styles.primary.backgroundColor}
+          color={styles.primary.color}
+          borderRadius={30}
+          height={50}
+          width={50}
+        />
+      }
       body={
         <View>
           <YStack gap={10}>

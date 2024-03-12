@@ -10,26 +10,22 @@ import {
   XStack,
   YStack
 } from "tamagui";
-import { Car, CarFront, Fuel, Info, Plus, Trash } from "@tamagui/lucide-icons";
-import { getAllCars, insertCar, removeCar } from "../db/cars";
-import * as SQLite from "expo-sqlite";
+import { Car, CarFront, Info, Trash } from "@tamagui/lucide-icons";
+import { getAllCars, removeCar } from "../db/cars";
 import { FuelLog } from "../components/addFuelLog";
-import { CarModel } from "../typedefs/cars";
 import AddCarPage from "../components/addCarPage";
 import { useQuery } from "react-query";
 import LoadingCard from "../components/loadingCard";
-import NotFoundCard from "../components/notFoundCard";
 
 export default function CarsPage({ navigation }: any) {
   //const [cars,  setCars] = useState<CarModel[]>([]);
   const {
     data: cars,
-    isLoading,
-    isError,
+    isFetching,
     refetch
   } = useQuery("getCars", () => getAllCars());
-
-  if (isLoading) return <LoadingCard />;
+  console.log(isFetching, "loadin");
+  if (isFetching) return <LoadingCard />;
 
   if (!cars || cars.length == 0) return;
 
