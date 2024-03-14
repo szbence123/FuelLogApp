@@ -1,6 +1,6 @@
 import { YStack } from "tamagui";
 import { Check, ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
-import { Adapt, Label, Select, Sheet } from "tamagui";
+import { Adapt, Select, Sheet } from "tamagui";
 import { SelectProps } from "../typedefs/props";
 export default function SelectMenu(props: SelectProps) {
   return (
@@ -46,26 +46,23 @@ export default function SelectMenu(props: SelectProps) {
           </YStack>
         </Select.ScrollUpButton>
 
-        <Select.Viewport
-          // to do animations:
-          // animation="quick"
-          // animateOnly={['transform', 'opacity']}
-          // enterStyle={{ o: 0, y: -10 }}
-          // exitStyle={{ o: 0, y: 10 }}
-          minWidth={200}
-          width="100%"
-        >
+        <Select.Viewport minWidth={200} width="100%">
           <Select.Group>
             <Select.Label>{props.title}</Select.Label>
             {props.items.map((item, i) => {
               return (
                 <Select.Item
                   index={i}
-                  key={item.name}
-                  value={item.name.toLowerCase()}
+                  key={item.value}
+                  value={item.value}
+                  justifyContent="flex-start"
+                  gap={30}
                 >
-                  <Select.ItemText>{item.name}</Select.ItemText>
-                  <Select.ItemIndicator marginLeft="auto">
+                  {item.icon ? item.icon : <></>}
+                  <Select.ItemText textAlign="left">
+                    {item.name}
+                  </Select.ItemText>
+                  <Select.ItemIndicator marginRight="auto">
                     <Check size={16} />
                   </Select.ItemIndicator>
                 </Select.Item>
@@ -73,19 +70,6 @@ export default function SelectMenu(props: SelectProps) {
             }, [])}
           </Select.Group>
           {/* Native gets an extra icon */}
-
-          <YStack
-            position="absolute"
-            right={0}
-            top={0}
-            bottom={0}
-            alignItems="center"
-            justifyContent="center"
-            width={"$4"}
-            pointerEvents="none"
-          >
-            <ChevronDown size={"$true"} />
-          </YStack>
         </Select.Viewport>
 
         <Select.ScrollDownButton

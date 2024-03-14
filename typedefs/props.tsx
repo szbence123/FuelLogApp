@@ -10,11 +10,12 @@ export type SelectProps = {
   items: SelectItem[];
   default?: string;
   title?: string;
-  setSelected?: React.Dispatch<string>;
+  setSelected?: React.Dispatch<any>;
   selected?: string;
 };
 
 export type SelectItem = {
   name: string;
   value: string;
+  icon?: React.ReactNode;
 };

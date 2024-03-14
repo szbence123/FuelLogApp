@@ -1,12 +1,11 @@
-import { Dimensions, View } from "react-native";
+import { Dimensions } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import { styles } from "../styles/global";
 import { useQuery } from "react-query";
 import { getAllFuelPricesForChart } from "../db/fuelinfo";
 import { H1, ScrollView, YStack } from "tamagui";
 import moment from "moment";
-import YearSelector from "./yearSelector";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import LoadingCard from "./loadingCard";
 import NotFoundCard from "./notFoundCard";
 
@@ -27,6 +26,7 @@ export default function Charts({ route, selectedYear, start, end }) {
   useEffect(() => {
     refetch();
   }, [selectedYear]);
+
   return isLoading ? (
     <LoadingCard />
   ) : (

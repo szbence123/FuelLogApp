@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { SizeTokens } from "tamagui";
-import { Button, Paragraph, Progress, Slider, XStack, YStack } from "tamagui";
+import { Progress, Slider, XStack, YStack } from "tamagui";
 import { styles } from "../styles/global";
 
 export function ProgressBar() {

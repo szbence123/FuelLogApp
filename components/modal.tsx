@@ -1,15 +1,5 @@
-import {
-  Adapt,
-  Button,
-  Dialog,
-  Fieldset,
-  Input,
-  Sheet,
-  Unspaced,
-  XStack
-} from "tamagui";
-import { Plus, Save, X } from "@tamagui/lucide-icons";
-import { styles } from "../styles/global";
+import { Adapt, Button, Dialog, Sheet, Unspaced } from "tamagui";
+import { X } from "@tamagui/lucide-icons";
 import { ModalProps } from "../typedefs/props";
 
 export default function Modal(props: ModalProps) {

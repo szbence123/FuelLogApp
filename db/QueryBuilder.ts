@@ -12,11 +12,11 @@ export const executeQuery = <T>(
         params,
         (_, result) => {
           const data: T = result.rows._array as unknown as T;
-          console.log(data);
+          console.info(`SQL Query -> { ${query}}`, data);
           resolve(data);
         },
         (error, errorObject) => {
-          console.log("SQL Error", errorObject);
+          console.error(`SQL Error -> { ${query}}`, errorObject);
           reject(errorObject);
           return false;
         }

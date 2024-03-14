@@ -1,5 +1,5 @@
-import { Loader, Search } from "@tamagui/lucide-icons";
-import { Button, Card, H2, XStack } from "tamagui";
+import { Loader } from "@tamagui/lucide-icons";
+import { Button, Card, H2 } from "tamagui";
 import { ProgressBar } from "./progress";
 
 export default function LoadingCard() {

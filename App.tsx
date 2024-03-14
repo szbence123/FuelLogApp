@@ -1,10 +1,9 @@
 import { StatusBar } from "react-native";
-import { StyleSheet, Text, View } from "react-native";
 import "@tamagui/core/reset.css";
 import { TamaguiProvider, createTamagui } from "@tamagui/core";
 import { config } from "@tamagui/config/v3";
 import { AppNavigator } from "./StackNavigator";
-import { init_db, truncate } from "./db/init_db";
+import { init_db } from "./db/init_db";
 import { PortalProvider } from "tamagui";
 import * as Font from "expo-font";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -46,17 +45,6 @@ export default function App() {
 
   if (!fontLoaded) return null;
 
-  /*
-  if (!fontLoaded) {
-    return (
-      <AppLoading
-        startAsync={fetchFonts}
-        onFinish={() => setFontLoaded(true)}
-        onError={console.warn}
-      />
-    );
-  }
-*/
   init_db().catch((err) => console.log(err));
 
   return (

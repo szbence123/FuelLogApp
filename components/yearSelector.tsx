@@ -1,4 +1,3 @@
-import { Check } from "@tamagui/lucide-icons";
 import SelectMenu from "./select";
 import { useEffect, useState } from "react";
 import { SelectItem } from "../typedefs/props";

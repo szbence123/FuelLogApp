@@ -1,5 +1,5 @@
 import { Search } from "@tamagui/lucide-icons";
-import { Button, Card, H2, XStack } from "tamagui";
+import { Button, Card, H2 } from "tamagui";
 
 export default function NotFoundCard() {
   return (

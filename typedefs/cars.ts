@@ -2,6 +2,9 @@ export type CarModel = {
   id: number;
   name: string;
   regNumber: string;
+  color: string;
+  fuel_type_name: string;
+  fuel_type_id: string;
 };
 
 export type FuelInfoModel = {
@@ -13,6 +16,8 @@ export type FuelInfoModel = {
   location: string;
   amount: number;
   car_id: number;
+  name: string;
+  color: string;
 };
 
 export type CostTypeModel = {

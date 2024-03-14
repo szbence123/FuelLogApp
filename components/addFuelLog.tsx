@@ -1,10 +1,10 @@
-import { Fuel, Plus, Save, X } from "@tamagui/lucide-icons";
+import { Fuel, Save } from "@tamagui/lucide-icons";
 import {
-  Adapt,
   Button,
   Dialog,
   Fieldset,
   Input,
+  Select,
   Separator,
   XStack,
   YStack
@@ -15,17 +15,33 @@ import { View } from "react-native";
 import { useState } from "react";
 import { insertFuelInfo } from "../db/fuelinfo";
 import moment from "moment";
+import SelectMenu from "./select";
+import { FuelType } from "../typedefs/fuelTypes";
+import { getAllFuelTypes } from "../db/fuelTypes";
+import { useQuery } from "react-query";
+import { SelectItem } from "../typedefs/props";
+import LoadingCard from "./loadingCard";
 
-export function FuelLog({ carId }) {
-  return <AddFuelLog carId={carId} />;
+export function FuelLog({ carId, fuelTypeId }) {
+  return <AddFuelLog carId={carId} fuelTypeId={fuelTypeId} />;
 }
 
-function AddFuelLog({ carId }) {
+function AddFuelLog({ carId, fuelTypeId }) {
   const [km, setKm] = useState("");
   const [all_km, setAllKm] = useState("");
   const [price, setPrice] = useState("");
   const [location, setLocation] = useState("");
   const [amount, setAmount] = useState("");
+  const [selectedFuelType, setSelectedFuelType] = useState(
+    fuelTypeId.toString()
+  );
+
+  const { data: fuelTypes, isLoading } = useQuery<FuelType[]>({
+    queryKey: "fuelTypes",
+    queryFn: async (): Promise<FuelType[]> => {
+      return await getAllFuelTypes();
+    }
+  });
 
   const addFuelLog = async () => {
     insertFuelInfo(
@@ -35,7 +51,8 @@ function AddFuelLog({ carId }) {
       parseFloat(price),
       location,
       parseFloat(amount),
-      parseInt(carId)
+      parseInt(carId),
+      parseFloat(selectedFuelType)
     );
   };
 
@@ -53,70 +70,96 @@ function AddFuelLog({ carId }) {
         </Button>
       }
       body={
-        <View>
-          <YStack gap={10}>
-            <Fieldset horizontal>
-              <Input
-                onChangeText={setPrice}
-                flex={1}
-                id="price"
-                placeholder="Fizetve (Ft)"
-              />
-            </Fieldset>
-            <Fieldset horizontal>
-              <Input
-                onChangeText={setAmount}
-                flex={1}
-                id="amount"
-                placeholder="Tankolt mennyiség"
-              />
-            </Fieldset>
-            <Fieldset horizontal>
-              <Input
-                onChangeText={setKm}
-                flex={1}
-                id="km"
-                placeholder="Km óra állás (nullázás óta)"
-              />
-            </Fieldset>
-            <Fieldset horizontal>
-              <Input
-                onChangeText={setAllKm}
-                flex={1}
-                id="allkm"
-                placeholder="Össz. km"
-              />
-            </Fieldset>
-            <Fieldset horizontal>
-              <Input
-                onChangeText={setLocation}
-                flex={1}
-                id="location"
-                placeholder="Tankolás helye"
-              />
-            </Fieldset>
-          </YStack>
-          <Separator margin={30} />
-          <XStack alignSelf="flex-end" gap={4}>
-            <Dialog.Close displayWhenAdapted asChild>
-              <Button theme="active" aria-label="Close">
-                Mégsem
-              </Button>
-            </Dialog.Close>
+        !isLoading && fuelTypes ? (
+          <View>
+            <YStack gap={10}>
+              <Fieldset horizontal>
+                <SelectMenu
+                  selected={selectedFuelType}
+                  setSelected={setSelectedFuelType}
+                  title="Üzemanyag típusa"
+                  items={fuelTypes.map((f: FuelType): SelectItem => {
+                    return {
+                      value: f.id.toString(),
+                      name: f.name,
+                      icon: (
+                        <Select.Icon
+                          borderRadius={40}
+                          backgroundColor={f.color}
+                          padding={5}
+                        >
+                          <Fuel color="white" />
+                        </Select.Icon>
+                      )
+                    };
+                  })}
+                />
+              </Fieldset>
+              <Fieldset horizontal>
+                <Input
+                  onChangeText={setPrice}
+                  flex={1}
+                  id="price"
+                  placeholder="Fizetve (Ft)"
+                />
+              </Fieldset>
+              <Fieldset horizontal>
+                <Input
+                  onChangeText={setAmount}
+                  flex={1}
+                  id="amount"
+                  placeholder="Tankolt mennyiség"
+                />
+              </Fieldset>
+              <Fieldset horizontal>
+                <Input
+                  onChangeText={setKm}
+                  flex={1}
+                  id="km"
+                  placeholder="Km óra állás (nullázás óta)"
+                />
+              </Fieldset>
+              <Fieldset horizontal>
+                <Input
+                  onChangeText={setAllKm}
+                  flex={1}
+                  id="allkm"
+                  placeholder="Össz. km"
+                />
+              </Fieldset>
+              <Fieldset horizontal>
+                <Input
+                  onChangeText={setLocation}
+                  flex={1}
+                  id="location"
+                  placeholder="Tankolás helye"
+                />
+              </Fieldset>
+            </YStack>
+            <Separator margin={30} />
+            <XStack alignSelf="flex-end" gap={4}>
+              <Dialog.Close displayWhenAdapted asChild>
+                <Button theme="active" aria-label="Close">
+                  Mégsem
+                </Button>
+              </Dialog.Close>
 
-            <Dialog.Close displayWhenAdapted asChild>
-              <Button
-                onPress={() => addFuelLog()}
-                icon={Save}
-                theme="active"
-                aria-label="Close"
-                style={styles.primary}
-              >
-                Mentés
-              </Button>
-            </Dialog.Close>
-          </XStack>
-        </View>
+              <Dialog.Close displayWhenAdapted asChild>
+                <Button
+                  onPress={() => addFuelLog()}
+                  icon={Save}
+                  theme="active"
+                  aria-label="Close"
+                  style={styles.primary}
+                >
+                  Mentés
+                </Button>
+              </Dialog.Close>
+            </XStack>
+          </View>
+        ) : (
+          <LoadingCard />
+        )
       }
     />
   );

@@ -1,12 +1,11 @@
-import { Button, Card, H1, H2, Paragraph, Separator, XStack } from "tamagui";
+import { Button, Card, H2, Paragraph, XStack } from "tamagui";
 import { Text } from "react-native";
 import { getAllFuelInfo, removeFuelInfo } from "../db/fuelinfo";
-import { Trash } from "@tamagui/lucide-icons";
+import { Fuel, Trash } from "@tamagui/lucide-icons";
 import { useQuery } from "react-query";
 import { FuelInfoModel } from "../typedefs/cars";
 import NotFoundCard from "./notFoundCard";
 import LoadingCard from "./loadingCard";
-import { useEffect } from "react";
 
 export default function FuelList({ route, selectedYear, start, end }) {
   const { data, isLoading, refetch } = useQuery({
@@ -32,6 +31,25 @@ export default function FuelList({ route, selectedYear, start, end }) {
           <H2 textAlign="right" color="gray">
             {fuelInfo.date}
           </H2>
+
+          <XStack
+            alignItems="center"
+            gap={5}
+            borderRadius={40}
+            backgroundColor="#eee"
+            margin={10}
+          >
+            <XStack
+              borderRadius={50}
+              padding={10}
+              backgroundColor={fuelInfo.color}
+            >
+              <Fuel size={20} color="white" />
+            </XStack>
+            <XStack>
+              <Paragraph>{fuelInfo.name}</Paragraph>
+            </XStack>
+          </XStack>
           <Paragraph theme="alt2">
             Km óra állás:{" "}
             <Text style={{ fontFamily: "InterBold" }}>{fuelInfo.km} km</Text>

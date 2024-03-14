@@ -1,16 +1,16 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import {
   Button,
   Card,
-  H1,
   H2,
   H3,
   Paragraph,
   ScrollView,
   XStack,
-  YStack
+  YStack,
+  Text
 } from "tamagui";
-import { Car, CarFront, Info, Trash } from "@tamagui/lucide-icons";
+import { CarFront, Fuel, Info, Trash } from "@tamagui/lucide-icons";
 import { getAllCars, removeCar } from "../db/cars";
 import { FuelLog } from "../components/addFuelLog";
 import AddCarPage from "../components/addCarPage";
@@ -18,16 +18,12 @@ import { useQuery } from "react-query";
 import LoadingCard from "../components/loadingCard";
 
 export default function CarsPage({ navigation }: any) {
-  //const [cars,  setCars] = useState<CarModel[]>([]);
   const {
     data: cars,
     isFetching,
     refetch
   } = useQuery("getCars", () => getAllCars());
-  console.log(isFetching, "loadin");
   if (isFetching) return <LoadingCard />;
-
-  if (!cars || cars.length == 0) return;
 
   return (
     <ScrollView>
@@ -47,10 +43,25 @@ export default function CarsPage({ navigation }: any) {
                   icon={CarFront}
                 ></Button>
               </XStack>
+              <XStack
+                alignItems="center"
+                gap={5}
+                borderRadius={40}
+                backgroundColor="#eee"
+              >
+                <XStack
+                  borderRadius={50}
+                  padding={10}
+                  backgroundColor={car.color}
+                >
+                  <Fuel size={20} color="white" />
+                </XStack>
+                <Text>{car.fuel_type_name}</Text>
+              </XStack>
             </Card.Header>
             <Card.Footer padded>
               <YStack width="100%" gap={5}>
-                <FuelLog carId={car.id} />
+                <FuelLog carId={car.id} fuelTypeId={car.fuel_type_id} />
                 <XStack width="100%" justifyContent="space-between" gap={5}>
                   <Button
                     flex={1}
