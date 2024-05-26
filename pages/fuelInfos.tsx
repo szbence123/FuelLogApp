@@ -16,6 +16,7 @@ export default function FuelInfosPage({ route }) {
 	const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
 	const [startDate, setStartDate] = useState(new Date(parseInt(selectedYear), 0, 1));
 	const [endDate, setEndDate] = useState(new Date(parseInt(selectedYear), 11, 31));
+
 	const openStartPicker = () => {
 		setStartShowDatePicker(true);
 	};

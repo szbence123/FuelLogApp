@@ -4,9 +4,8 @@ import { ModalProps } from "../types/props";
 
 export default function Modal(props: ModalProps) {
 	return (
-		<Dialog modal>
+		<Dialog>
 			<Dialog.Trigger asChild>{props.openBtn}</Dialog.Trigger>
-
 			<Adapt when="sm" platform="touch">
 				<Sheet animation="quick" zIndex={200000} modal dismissOnSnapToBottom>
 					<Sheet.Frame padding="$4" gap="$4">
@@ -15,10 +14,8 @@ export default function Modal(props: ModalProps) {
 					<Sheet.Overlay animation="quick" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
 				</Sheet>
 			</Adapt>
-
 			<Dialog.Portal>
-				<Dialog.Overlay key="overlay" animation="quick" opacity={0} enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
-
+				<Dialog.Overlay animation="quick" opacity={0} enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
 				<Dialog.Content
 					bordered
 					elevate
@@ -29,9 +26,7 @@ export default function Modal(props: ModalProps) {
 					gap="$4"
 				>
 					<Dialog.Title>{props.title}</Dialog.Title>
-
 					{props.body}
-
 					<Unspaced>
 						<Dialog.Close asChild>
 							<Button position="absolute" top="$3" right="$3" size="$2" circular icon={X} />

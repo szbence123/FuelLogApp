@@ -1,9 +1,9 @@
-import { Diameter, Fuel, Gauge, LocateFixed, MapPin, Plus, Radius, Receipt, Save, Sigma } from "@tamagui/lucide-icons";
+import { Calendar, Clock, Diameter, Fuel, Gauge, LocateFixed, MapPin, Plus, Radius, Receipt, Save, Sigma } from "@tamagui/lucide-icons";
 import { Button, ButtonIcon, Dialog, Fieldset, Input, ScrollView, Select, Separator, Spacer, Text, XStack, YStack } from "tamagui";
 import { styles } from "../styles/global";
 import Modal from "./modal";
 import { View } from "react-native";
-import { ReactNode, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { insertFuelInfo } from "../db/fuelinfo";
 import moment from "moment";
 import SelectMenu from "./select";
@@ -16,6 +16,7 @@ import { Locate } from "@tamagui/lucide-icons";
 import InputLabel from "./inputLabel";
 import { useToastController } from "@tamagui/toast";
 import { toast } from "burnt";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 //export function FuelLog({ carId, fuelTypeId }) {
 //	return <AddFuelLog carId={carId} fuelTypeId={fuelTypeId} />;
@@ -36,12 +37,38 @@ export function FuelLog({ carId, fuelTypeId, openingFromMenuBar = false }) {
 		}
 	});
 
+	const [showDatePicker, setShowDatePicker] = useState(false);
+
+	const [date, setDate] = useState(new Date());
+
+	const [showTimePicker, setShowTimePicker] = useState(false);
+
+	const openDatePicker = () => {
+		setShowDatePicker(true);
+	};
+
+	const openTimePicker = () => {
+		setShowTimePicker(true);
+	};
+
+	const onDateChange = (event, selectedDate) => {
+		const currentDate = selectedDate || date;
+		setDate(currentDate);
+		setShowDatePicker(false);
+	};
+
+	const onTimeChange = (event, selectedTime) => {
+		const currentTime = selectedTime || date;
+		setDate(currentTime);
+		setShowTimePicker(false);
+	};
+
 	const toast = useToastController();
 	const queryClient = useQueryClient();
 
 	const addFuelLog = async () => {
 		insertFuelInfo(
-			moment().format("YYYY-MM-DD HH:MM"),
+			moment(date).format("YYYY-MM-DD HH:mm"),
 			parseFloat(km),
 			parseFloat(all_km),
 			parseFloat(price),
@@ -69,6 +96,10 @@ export function FuelLog({ carId, fuelTypeId, openingFromMenuBar = false }) {
 			body={
 				!isLoading && fuelTypes ? (
 					<ScrollView>
+						{showDatePicker && (
+							<DateTimePicker value={date} mode="date" display="default" onChange={onDateChange} accentColor={styles.primary.backgroundColor} />
+						)}
+						{showTimePicker && <DateTimePicker value={date} mode="time" display="clock" is24Hour onChange={onTimeChange} />}
 						<YStack gap={10}>
 							<Fieldset>
 								<InputLabel Icon={Fuel} text="Üzemanyag típusa">
@@ -89,6 +120,17 @@ export function FuelLog({ carId, fuelTypeId, openingFromMenuBar = false }) {
 										})}
 									/>
 								</InputLabel>
+							</Fieldset>
+
+							<Fieldset>
+								<XStack justifyContent="space-between">
+									<InputLabel Icon={Calendar} text="Dátum">
+										<Input flexGrow={2} value={moment(date).format("YYYY-MM-DD")} onPressIn={() => openDatePicker()} />
+									</InputLabel>
+									<InputLabel Icon={Clock} text="Idő">
+										<Input value={moment(date).format("HH:mm")} onPressIn={() => openTimePicker()} />
+									</InputLabel>
+								</XStack>
 							</Fieldset>
 
 							<Fieldset>
