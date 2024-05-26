@@ -11,6 +11,8 @@ import { StrictMode, useEffect, useState } from "react";
 import { styles } from "./styles/global";
 const tamaguiConfig = createTamagui(config);
 import { preventAutoHideAsync, hideAsync } from "expo-splash-screen";
+import { ToastProvider, ToastViewport } from "@tamagui/toast";
+import { InfoToast } from "./components/toast";
 
 type Conf = typeof tamaguiConfig;
 declare module "@tamagui/core" {
@@ -52,8 +54,12 @@ export default function App() {
 			<QueryClientProvider client={qc}>
 				<TamaguiProvider config={tamaguiConfig}>
 					<PortalProvider>
-						<StatusBar backgroundColor={styles.primary.backgroundColor} barStyle="light-content" />
-						<AppNavigator />
+						<ToastProvider>
+							<StatusBar backgroundColor={styles.primary.backgroundColor} barStyle="light-content" />
+							<AppNavigator />
+							<ToastViewport />
+							<InfoToast />
+						</ToastProvider>
 					</PortalProvider>
 				</TamaguiProvider>
 			</QueryClientProvider>

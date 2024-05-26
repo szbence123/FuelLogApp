@@ -1,73 +1,70 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, RouteProp, useRoute } from "@react-navigation/native";
 import CarsPage from "./pages/cars";
 import { styles } from "./styles/global";
 import FuelInfosPage from "./pages/fuelInfos";
 import { Button, XStack } from "tamagui";
-import { Settings } from "react-native";
 import { Plus, Settings2 } from "@tamagui/lucide-icons";
-import { SettingsPopover } from "./components/settingsPopover";
+import React from "react";
+import { FuelLog } from "./components/addFuelLog";
+import AddCarPage from "./components/addCarPage";
+import { RefetchOptions } from "react-query";
 
 const Stack = createNativeStackNavigator();
 
-export function AppNavigator() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: styles.primary.backgroundColor // Your desired color
-          },
-          headerTintColor: "white", // Color of the title and buttons
-          headerTitleStyle: {
-            fontWeight: "bold"
-          }
-        }}
-        initialRouteName="Cars"
-      >
-        <Stack.Screen
-          name="Cars"
-          component={CarsPage}
-          options={{
-            title: "Autóim",
-            headerRight: () => (
-              <XStack>
-                <Button
-                  backgroundColor={styles.primary.backgroundColor}
-                  onPress={() => {}}
-                  color="#fff"
-                  size={40}
-                  icon={Settings2}
-                />
+export type RootStackParamList = {
+	Cars: { refetch: RefetchOptions };
+	FuelInfos: { carId: number; fuelTypeId: number };
+};
 
-                <Button
-                  backgroundColor={styles.primary.backgroundColor}
-                  onPress={() => {}}
-                  color="#fff"
-                  size={40}
-                  icon={Plus}
-                />
-              </XStack>
-            )
-          }}
-        />
-        <Stack.Screen
-          name="FuelInfos"
-          component={FuelInfosPage}
-          options={{
-            title: "Tankolások",
-            headerRight: () => (
-              <Button
-                backgroundColor={styles.primary.backgroundColor}
-                onPress={() => {}}
-                color="#fff"
-                size={40}
-                icon={Plus}
-              />
-            )
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+export type FuelInfosRouteProp = RouteProp<RootStackParamList, "FuelInfos">;
+export type CarsRouteProp = RouteProp<RootStackParamList, "Cars">;
+
+const FuelInfosHeaderRight = () => {
+	const route = useRoute<FuelInfosRouteProp>();
+	const { carId, fuelTypeId } = route.params;
+	return <FuelLog carId={carId} fuelTypeId={fuelTypeId} openingFromMenuBar={true} />;
+};
+
+export function AppNavigator() {
+	return (
+		<NavigationContainer>
+			<Stack.Navigator
+				screenOptions={{
+					headerStyle: {
+						backgroundColor: styles.primary.backgroundColor // Your desired color
+					},
+					headerTintColor: "white", // Color of the title and buttons
+					headerTitleStyle: {
+						fontWeight: "bold"
+					}
+				}}
+				initialRouteName="Cars"
+			>
+				<Stack.Screen
+					name="Cars"
+					component={CarsPage}
+					options={{
+						title: "Autóim",
+						headerRight: () => (
+							<XStack>
+								<Button backgroundColor={styles.primary.backgroundColor} onPress={() => {}} color="#fff" size={40} icon={Settings2} />
+								<AddCarPage openingFromMenuBar={true} />
+							</XStack>
+						)
+					}}
+				/>
+				<Stack.Screen
+					name="FuelInfos"
+					component={FuelInfosPage}
+					options={{
+						title: "Tankolások",
+						headerRight: () => {
+							return <FuelInfosHeaderRight />;
+						}
+					}}
+				/>
+			</Stack.Navigator>
+		</NavigationContainer>
+	);
 }

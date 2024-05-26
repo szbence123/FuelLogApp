@@ -1,15 +1,19 @@
 import { View } from "react-native";
 import { Button, Card, H2, H3, Paragraph, ScrollView, XStack, YStack, Text } from "tamagui";
-import { CarFront, Fuel, Info, Trash } from "@tamagui/lucide-icons";
+import { CarFront, ChevronRight, Fuel, Info, Menu, Trash } from "@tamagui/lucide-icons";
 import { getAllCars, removeCar } from "../db/cars";
 import { FuelLog } from "../components/addFuelLog";
 import AddCarPage from "../components/addCarPage";
 import { useQuery } from "react-query";
 import LoadingCard from "../components/loadingCard";
 import { styles } from "../styles/global";
+import { useState } from "react";
+import { useToastController } from "@tamagui/toast";
 
 export default function CarsPage({ navigation }: any) {
-	const { data: cars, isFetching, refetch } = useQuery("getCars", () => getAllCars());
+	const [propsOpened, setPropsOpened] = useState(-1);
+	const { data: cars, isFetching, refetch } = useQuery({ queryKey: "getAllCars", queryFn: () => getAllCars() });
+	const toast = useToastController();
 	if (isFetching) return <LoadingCard />;
 
 	return (
@@ -29,30 +33,48 @@ export default function CarsPage({ navigation }: any) {
 									</Text>
 								</XStack>
 							</XStack>
-							<XStack gap={5} borderRadius={40} height={80} flexDirection="column">
+							<YStack gap={5} borderRadius={40} height={80} flexDirection="column">
 								<Text>Üzemanyag típusa: {car.fuel_type_name}</Text>
-								<View style={styles.plate}>
-									<View style={styles.eu}>
+								<XStack style={styles.plate}>
+									<XStack style={styles.eu}>
 										<Text color="white" fontSize={20}>
 											HU
 										</Text>
-									</View>
-									<Text style={styles.plateText} flex={1} fontSize={30}>
-										{car.reg_number.substring(0, 10)}
-									</Text>
-								</View>
-							</XStack>
+									</XStack>
+									<XStack margin="auto" justifyContent="center" alignItems="center">
+										<Text fontSize={30}>{car.reg_number.toString().substring(0, 10)}</Text>
+									</XStack>
+								</XStack>
+							</YStack>
 						</Card.Header>
 						<Card.Footer padded>
 							<YStack width="100%" gap={5}>
 								<FuelLog carId={car.id} fuelTypeId={car.fuel_type_id} />
 								<XStack width="100%" justifyContent="space-between" gap={5}>
-									<Button flex={1} onPress={() => navigation.navigate("FuelInfos", { carId: car.id })} alignSelf="center" icon={Info}>
+									<Button
+										flex={1}
+										onPress={() => navigation.navigate("FuelInfos", { carId: car.id, fuelTypeId: car.fuel_type_id })}
+										alignSelf="center"
+										icon={Fuel}
+									>
 										Tankolások
 									</Button>
-									<Button onLongPress={() => removeCar(car.id, refetch)} color="red" alignSelf="center" icon={Trash}>
-										Törlés
-									</Button>
+									{propsOpened === car.id ? (
+										<XStack gap={5}>
+											<Button
+												onPress={() => toast.show("Törléshez nyomd hosszan.")}
+												onLongPress={() => removeCar(car.id, refetch, toast.show)}
+												color="red"
+												alignSelf="center"
+												icon={Trash}
+											>
+												Törlés
+											</Button>
+											<Button onPress={() => setPropsOpened(-1)} icon={ChevronRight} />
+										</XStack>
+									) : (
+										<Button onPress={() => setPropsOpened(car.id)} icon={Menu} />
+									)}
 								</XStack>
 							</YStack>
 						</Card.Footer>
@@ -67,7 +89,7 @@ export default function CarsPage({ navigation }: any) {
 								<H3>Autó hozzáadása</H3>
 								<Paragraph theme="alt2">Jelenleg nincs autó hozzáadva</Paragraph>
 							</YStack>
-							<AddCarPage refetch={refetch} />
+							<AddCarPage />
 						</XStack>
 					</Card.Header>
 					<Card.Background />
@@ -75,7 +97,7 @@ export default function CarsPage({ navigation }: any) {
 			)}
 			{cars && cars.length > 0 ? (
 				<XStack>
-					<AddCarPage refetch={refetch} />
+					<AddCarPage />
 				</XStack>
 			) : (
 				<View></View>
