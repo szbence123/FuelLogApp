@@ -1,7 +1,7 @@
 export type CarModel = {
   id: number;
   name: string;
-  regNumber: string;
+  reg_number: string;
   color: string;
   fuel_type_name: string;
   fuel_type_id: string;

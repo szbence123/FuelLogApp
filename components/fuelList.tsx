@@ -67,7 +67,7 @@ export default function FuelList({ route, selectedYear, start, end }) {
           <XStack justifyContent="flex-end">
             <Button
               style={{}}
-              onPress={() => removeFuelInfo(fuelInfo.id, refetch)}
+              onLongPress={() => removeFuelInfo(fuelInfo.id, refetch)}
               color="red"
               icon={Trash}
             >

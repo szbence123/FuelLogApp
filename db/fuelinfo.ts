@@ -34,13 +34,15 @@ export const getAllFuelInfo = (
     );
   }
   if (selectedYear == "összes") {
-    return executeQuery(db, "SELECT * FROM FUEL_LOGS WHERE car_id = ?", [
-      carId
-    ]);
+    return executeQuery(
+      db,
+      "SELECT * FROM FUEL_LOGS fl INNER JOIN FUEL_TYPES ft on fl.fuel_type_id = ft.id  WHERE car_id = ?",
+      [carId]
+    );
   } else {
     return executeQuery(
       db,
-      "SELECT * FROM FUEL_LOGS WHERE car_id = ? AND date LIKE '%' || ? || '%'",
+      "SELECT * FROM FUEL_LOGS fl INNER JOIN FUEL_TYPES ft on fl.fuel_type_id = ft.id  WHERE car_id = ? AND date LIKE '%' || ? || '%'",
       [carId, selectedYear]
     );
   }
@@ -68,7 +70,9 @@ export const getAllFuelPricesForChart = (
 };
 
 export const removeFuelInfo = (id: number, refetch: Function) => {
+  console.log(id);
   return executeQuery(db, "DELETE FROM FUEL_LOGS WHERE id = ?", [id]).then(
     (r) => refetch()
   );
 };
+// TODO !!!!!!!! FIX ids -> wrong id because of joins !!!

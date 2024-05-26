@@ -4,6 +4,7 @@ import { db } from "./db";
 export const init_db = async () => {
   try {
     //await truncate(db);
+    //await alter(db);
     await init_car_table(db);
     await init_fuelinfo_table(db);
     await init_cost_types_table(db);
@@ -13,6 +14,12 @@ export const init_db = async () => {
     throw error;
   }
 };
+
+async function alter(db) {
+  await executeQuery(db, `SELECT * FROM FUEL_TYPES`);
+  await executeQuery(db, `UPDATE FUEL_TYPES SET name='E7' WHERE id = 1`);
+  await executeQuery(db, `UPDATE FUEL_TYPES SET name='B7' WHERE id = 3`);
+}
 
 async function init_car_table(db) {
   console.info("CARS");

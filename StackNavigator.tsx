@@ -6,6 +6,7 @@ import FuelInfosPage from "./pages/fuelInfos";
 import { Button, XStack } from "tamagui";
 import { Settings } from "react-native";
 import { Plus, Settings2 } from "@tamagui/lucide-icons";
+import { SettingsPopover } from "./components/settingsPopover";
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,7 @@ export function AppNavigator() {
                   size={40}
                   icon={Settings2}
                 />
+
                 <Button
                   backgroundColor={styles.primary.backgroundColor}
                   onPress={() => {}}
