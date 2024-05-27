@@ -1,13 +1,12 @@
 import { executeQuery } from "./QueryBuilder";
 import { db } from "./db";
 import * as FileSystem from "expo-file-system";
-import * as SQLite from "expo-sqlite";
 
 export const init_db = async () => {
 	try {
-		await truncate(db);
+		//await truncate(db);
 		//await alter(db);
-		//deleteDatabase();
+		//adeleteDatabase();
 		await init_car_table(db);
 		await init_fuelinfo_table(db);
 		await init_cost_types_table(db);

@@ -5,7 +5,7 @@ import { SelectProps } from "../types/props";
 export default function SelectMenu(props: SelectProps) {
 	return (
 		<Select value={props.selected} onValueChange={props.setSelected} disablePreventBodyScroll>
-			<Select.Trigger width="100%" iconAfter={ChevronDown}>
+			<Select.Trigger width="100%" style={props.style} iconAfter={ChevronDown}>
 				<Select.Value placeholder={props.title} />
 			</Select.Trigger>
 

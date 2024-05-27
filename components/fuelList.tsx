@@ -55,7 +55,7 @@ export default function FuelList({ route, selectedYear, start, end }) {
 						Össz km: <Text style={{ fontFamily: "InterBold" }}>{fuelInfo.all_km} km</Text>
 					</Paragraph>
 					<Paragraph theme="alt2">
-						Hely: <Text style={{ fontFamily: "InterBold" }}>{fuelInfo.location}</Text>
+						Hely: <Text style={{ fontFamily: "InterBold" }}>{fuelInfo.location || "Ismeretlen"}</Text>
 					</Paragraph>
 					<XStack justifyContent="flex-end">
 						{propsOpened === fuelInfo.id ? (

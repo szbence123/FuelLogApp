@@ -10,6 +10,9 @@ export const styles = {
 		success: "#30a147",
 		warning: "#cf9308"
 	},
+	error: {
+		color: "red"
+	},
 	floatingBtn: {
 		position: "absolute",
 		bottom: 20,

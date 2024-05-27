@@ -37,6 +37,7 @@ export const InfoToast = () => {
 	if (!currentToast || currentToast.isHandledNatively) return null;
 	return (
 		<Toast
+			zIndex={500}
 			key={currentToast.id}
 			duration={1800}
 			enterStyle={{ opacity: 0, scale: 0.5, x: 0 }}

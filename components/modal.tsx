@@ -7,16 +7,17 @@ export default function Modal(props: ModalProps) {
 		<Dialog>
 			<Dialog.Trigger asChild>{props.openBtn}</Dialog.Trigger>
 			<Adapt when="sm" platform="touch">
-				<Sheet animation="quick" zIndex={200000} modal dismissOnSnapToBottom>
+				<Sheet animation="quick" zIndex={5} modal dismissOnSnapToBottom>
 					<Sheet.Frame padding="$4" gap="$4">
 						<Adapt.Contents />
 					</Sheet.Frame>
-					<Sheet.Overlay animation="quick" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
+					<Sheet.Overlay zIndex={2} animation="quick" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
 				</Sheet>
 			</Adapt>
 			<Dialog.Portal>
-				<Dialog.Overlay animation="quick" opacity={0} enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
+				<Dialog.Overlay zIndex={2} animation="quick" opacity={0} enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
 				<Dialog.Content
+					zIndex={200}
 					bordered
 					elevate
 					key="content"

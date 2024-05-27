@@ -2,7 +2,7 @@ import { CarModel } from "../types/cars";
 import { executeQuery } from "./QueryBuilder";
 import { db } from "./db";
 
-export const insertCar = (name: string, regNumber: string, fuelTypeId: number, showToast?: Function) => {
+export const insertCar = async (name: string, regNumber: string, fuelTypeId: number, showToast?: Function) => {
 	return executeQuery<CarModel[]>(db, "INSERT INTO CARS (name, reg_number, fuel_type_id) VALUES (?, ?, ?)", [name, regNumber, fuelTypeId], showToast);
 };
 

@@ -15,7 +15,6 @@ export const executeQuery = <T>(db: Database, query: string, params: any[] = [],
 					if (showToast) {
 						showToast("Sikeres művelet!", { notificationOptions: { tag: NotificationTypeEnum.Success, icon: NotificationTypeEnum.Success } });
 					}
-
 					resolve(data);
 				},
 				(error, errorObject) => {
