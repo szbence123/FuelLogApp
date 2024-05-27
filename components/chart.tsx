@@ -10,75 +10,64 @@ import LoadingCard from "./loadingCard";
 import NotFoundCard from "./notFoundCard";
 
 export default function Charts({ route, selectedYear, start, end }) {
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ["getAllFuelInfo", start, end, selectedYear],
-    queryFn: async () => {
-      let cc = await getAllFuelPricesForChart(
-        route.params.carId,
-        selectedYear,
-        start,
-        end
-      );
-      return cc;
-    }
-  });
+	const { data, isLoading, refetch } = useQuery({
+		queryKey: ["getAllFuelInfo", start, end, selectedYear],
+		queryFn: async () => {
+			let cc = await getAllFuelPricesForChart(route.params.carId, selectedYear, start, end);
+			return cc;
+		}
+	});
 
-  useEffect(() => {
-    refetch();
-  }, [selectedYear]);
+	useEffect(() => {
+		refetch();
+	}, [selectedYear]);
 
-  return isLoading ? (
-    <LoadingCard />
-  ) : (
-    <ScrollView>
-      {data && data.length > 0 ? (
-        <YStack padding={10} width="100%">
-          <H1>Tankolások</H1>
-          <ScrollView horizontal>
-            <LineChart
-              data={{
-                labels:
-                  data && selectedYear
-                    ? data.map((fi) => moment(fi.date).format("MM-DD"))
-                    : [],
-                datasets: [
-                  {
-                    data:
-                      data && selectedYear
-                        ? data.map((fi) => fi.price / 1000)
-                        : []
-                  }
-                ]
-              }}
-              width={Dimensions.get("window").width} // from react-native
-              height={220}
-              yAxisLabel=""
-              yAxisSuffix="k Ft"
-              yAxisInterval={1} // optional, defaults to 1
-              chartConfig={{
-                backgroundColor: "white",
-                backgroundGradientFrom: "white",
-                backgroundGradientTo: "white",
-                decimalPlaces: 0, // optional, defaults to 2dp
-                color: (opacity = 1) => styles.primary.backgroundColor,
-                labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                style: {},
-                propsForDots: {
-                  r: "3",
-                  strokeWidth: "1",
-                  stroke: "none"
-                }
-              }}
-              bezier
-              style={{
-                marginVertical: 8
-              }}
-            />
-          </ScrollView>
-        </YStack>
-      ) : (
-        <NotFoundCard />
-      )}
-    </ScrollView>
-  );
+	return isLoading ? (
+		<LoadingCard />
+	) : (
+		<ScrollView>
+			{data && data.length > 0 ? (
+				<YStack padding={10} width="100%">
+					<H1>Tankolások</H1>
+					<ScrollView horizontal>
+						<LineChart
+							data={{
+								labels: data && selectedYear ? data.map((fi) => moment(fi.date).format("MM-DD")) : [],
+								datasets: [
+									{
+										data: data && selectedYear ? data.map((fi) => fi.price / 1000) : []
+									}
+								]
+							}}
+							width={Dimensions.get("window").width} // from react-native
+							height={220}
+							yAxisLabel=""
+							yAxisSuffix="k Ft"
+							yAxisInterval={1} // optional, defaults to 1
+							chartConfig={{
+								backgroundColor: "white",
+								backgroundGradientFrom: "white",
+								backgroundGradientTo: "white",
+								decimalPlaces: 0, // optional, defaults to 2dp
+								color: (opacity = 1) => styles.primary.backgroundColor,
+								labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+								style: {},
+								propsForDots: {
+									r: "3",
+									strokeWidth: "1",
+									stroke: "none"
+								}
+							}}
+							bezier
+							style={{
+								marginVertical: 8
+							}}
+						/>
+					</ScrollView>
+				</YStack>
+			) : (
+				<NotFoundCard />
+			)}
+		</ScrollView>
+	);
 }

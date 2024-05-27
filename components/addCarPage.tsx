@@ -12,7 +12,6 @@ import { FuelType } from "../types/fuelTypes";
 import LoadingCard from "./loadingCard";
 import InputLabel from "./inputLabel";
 import { useToastController } from "@tamagui/toast";
-import { NotificationTypeEnum } from "../types/enums";
 import { Controller, useForm } from "react-hook-form";
 
 export default function AddCarPage({ last = false, isEdit = false, openingFromMenuBar = false }) {
@@ -128,7 +127,7 @@ export default function AddCarPage({ last = false, isEdit = false, openingFromMe
 								</Button>
 							</Dialog.Close>
 							<Dialog.Close displayWhenAdapted asChild>
-								<Button onPress={handleSubmit(onSubmit)} icon={Save} theme="active" aria-label="Close" style={styles.primary}>
+								<Button onPressIn={handleSubmit(onSubmit)} icon={Save} theme="active" aria-label="Close" style={styles.primary}>
 									Mentés
 								</Button>
 							</Dialog.Close>

@@ -7,10 +7,11 @@ import * as DocumentPicker from "expo-document-picker";
 import RNRestart from "react-native-restart";
 import { QueryClient } from "react-query";
 import { NotificationTypeEnum } from "../types/enums";
+import { restartApp } from "../App";
 
 export const exportDatabase = async (showToast: Function) => {
 	try {
-		const db = SQLite.openDatabase("fuel-log.db");
+		const db = SQLite.openDatabaseAsync("fuel-log.db");
 
 		const dbPath = `${FileSystem.documentDirectory}SQLite/fuel-log.db`;
 
@@ -64,6 +65,32 @@ export const importDatabase = async (showToast: Function, queryClient: QueryClie
 	} catch (error) {
 		console.error(error);
 		showToast("Sikertelen importálás.", {
+			message: error.message,
+			notificationOptions: { tag: NotificationTypeEnum.Danger, icon: NotificationTypeEnum.Danger }
+		});
+	}
+};
+
+export const deleteDatabase = async (showToast: Function, queryClient: QueryClient) => {
+	try {
+		const dbName = "fuel-log.db";
+		const dbPath = `${FileSystem.documentDirectory}SQLite/${dbName}`;
+
+		const dbInfo = await FileSystem.getInfoAsync(dbPath);
+
+		if (dbInfo.exists) {
+			await FileSystem.deleteAsync(dbPath, { idempotent: true });
+		}
+
+		showToast("Sikeres törlés!", {
+			message: "Az alkalmazás újraindul...",
+			notificationOptions: { tag: NotificationTypeEnum.Success, icon: NotificationTypeEnum.Danger }
+		});
+		setTimeout(() => {
+			restartApp();
+		}, 2000);
+	} catch (error) {
+		showToast("Sikertelen törlés.", {
 			message: error.message,
 			notificationOptions: { tag: NotificationTypeEnum.Danger, icon: NotificationTypeEnum.Danger }
 		});

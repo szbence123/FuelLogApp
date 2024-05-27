@@ -13,6 +13,9 @@ export const styles = {
 	error: {
 		color: "red"
 	},
+	dangerZone: {
+		background: "#ffb5b5"
+	},
 	floatingBtn: {
 		position: "absolute",
 		bottom: 20,

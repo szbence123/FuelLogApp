@@ -1,52 +1,47 @@
-import { executeQuery } from "./QueryBuilder";
-import { db } from "./db";
-import * as FileSystem from "expo-file-system";
+import { SQLiteDatabase } from "expo-sqlite";
 
-export const init_db = async () => {
+export const initDatabase = async (db: SQLiteDatabase) => {
 	try {
-		//await truncate(db);
-		//await alter(db);
-		//adeleteDatabase();
+		await init_fuel_types_table(db);
 		await init_car_table(db);
 		await init_fuelinfo_table(db);
 		await init_cost_types_table(db);
-		await init_costs_table(db);
-		await init_fuel_types_table(db);
-
-		//await alter(db);
+		//await init_costs_table();
 	} catch (error) {
 		throw error;
 	}
 };
 
-const deleteDatabase = async () => {
-	try {
-		const dbName = "fuel-log.db";
-		const dbPath = `${FileSystem.documentDirectory}SQLite/${dbName}`;
-
-		// Check if the database exists
-		const dbInfo = await FileSystem.getInfoAsync(dbPath);
-
-		if (dbInfo.exists) {
-			// Delete the database file
-			await FileSystem.deleteAsync(dbPath, { idempotent: true });
-		}
-	} catch (error) {
-		console.error("Error deleting database:", error);
-	}
-};
-
-async function alter(db) {
-	await executeQuery(db, ` DELETE FROM FUEL_LOGS`);
+async function alter() {
 	//await executeQuery(db, `SELECT * FROM FUEL_TYPES`);
 	//await executeQuery(db, `UPDATE FUEL_TYPES SET name='E7' WHERE id = 1`);
 	//await executeQuery(db, `UPDATE FUEL_TYPES SET name='B7' WHERE id = 3`);
 }
 
-async function init_car_table(db) {
+async function init_fuel_types_table(db: SQLiteDatabase) {
+	console.info("FUEL_TYPES");
+	await db.execAsync(
+		`CREATE TABLE IF NOT EXISTS FUEL_TYPES (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        short_name TEXT UNIQUE,
+        color TEXT
+    );`
+	);
+
+	await db.execAsync(
+		`INSERT OR IGNORE INTO FUEL_TYPES (name, short_name, color)
+      VALUES
+        ('95-ös Benzin', 'E10', 'green'),
+        ('100-as Benzin', 'E5', 'green'),
+        ('Dízel', 'B7', 'black'),
+        ('Dízel Premium', 'B7P', 'black');`
+	);
+}
+
+async function init_car_table(db: SQLiteDatabase) {
 	console.info("CARS");
-	await executeQuery(
-		db,
+	await db.execAsync(
 		`CREATE TABLE IF NOT EXISTS CARS (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
@@ -57,33 +52,9 @@ async function init_car_table(db) {
 	);
 }
 
-async function init_fuel_types_table(db) {
-	console.info("FUEL_TYPES");
-	await executeQuery(
-		db,
-		`CREATE TABLE IF NOT EXISTS FUEL_TYPES (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        short_name TEXT UNIQUE,
-        color TEXT
-    );`
-	);
-
-	await executeQuery(
-		db,
-		`INSERT OR IGNORE INTO FUEL_TYPES (name, short_name, color)
-      VALUES
-        ('95-ös Benzin', 'E10', 'green'),
-        ('100-as Benzin', 'E5', 'green'),
-        ('Dízel', 'B7', 'black'),
-        ('Dízel Premium', 'B7P', 'black');`
-	);
-}
-
-async function init_fuelinfo_table(db) {
+async function init_fuelinfo_table(db: SQLiteDatabase) {
 	console.info("FUEL_LOG");
-	await executeQuery(
-		db,
+	await db.execAsync(
 		`CREATE TABLE IF NOT EXISTS FUEL_LOGS (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         date DATETIME,
@@ -100,18 +71,18 @@ async function init_fuelinfo_table(db) {
 	);
 }
 
-async function init_cost_types_table(db) {
+async function init_cost_types_table(db: SQLiteDatabase) {
 	console.info("COST_TYPES");
-	await executeQuery(
-		db,
-		` CREATE TABLE IF NOT EXISTS COST_TYPES (
+	await db.execAsync(
+		`CREATE TABLE IF NOT EXISTS COST_TYPES (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT
     )`
 	);
 }
 
-async function init_costs_table(db) {
+/*
+async function init_costs_table() {
 	console.info("COSTS");
 	await executeQuery(
 		db,
@@ -125,11 +96,10 @@ async function init_costs_table(db) {
     )`
 	);
 }
-
-export function truncate(db) {
+*/
+export async function truncate(db: SQLiteDatabase) {
 	console.info("TRUNCATE");
-	executeQuery(
-		db,
+	await db.execAsync(
 		`
       DROP TABLE IF EXISTS CAR;
       DROP TABLE IF EXISTS FUELINFO;

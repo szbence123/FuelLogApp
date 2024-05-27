@@ -1,7 +1,6 @@
 import { FuelType } from "../types/fuelTypes";
-import { executeQuery } from "./QueryBuilder";
 import { db } from "./db";
 
-export const getAllFuelTypes = (): Promise<FuelType[]> => {
-	return executeQuery(db, "SELECT * FROM FUEL_TYPES");
+export const getAllFuelTypes = async (): Promise<FuelType[]> => {
+	return db.getAllAsync("SELECT * FROM FUEL_TYPES");
 };

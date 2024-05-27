@@ -250,7 +250,7 @@ export function FuelLog({ carId, fuelTypeId, openingFromMenuBar = false }) {
 							</Dialog.Close>
 
 							<Dialog.Close displayWhenAdapted asChild>
-								<Button onPress={handleSubmit(onSubmit)} icon={Save} theme="active" aria-label="Close" style={styles.primary}>
+								<Button onPressIn={handleSubmit(onSubmit)} icon={Save} theme="active" aria-label="Close" style={styles.primary}>
 									Mentés
 								</Button>
 							</Dialog.Close>
