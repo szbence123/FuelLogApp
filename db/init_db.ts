@@ -1,18 +1,39 @@
 import { executeQuery } from "./QueryBuilder";
 import { db } from "./db";
+import * as FileSystem from "expo-file-system";
+import * as SQLite from "expo-sqlite";
 
 export const init_db = async () => {
 	try {
-		//await truncate(db);
+		await truncate(db);
 		//await alter(db);
+		//deleteDatabase();
 		await init_car_table(db);
 		await init_fuelinfo_table(db);
 		await init_cost_types_table(db);
 		await init_costs_table(db);
 		await init_fuel_types_table(db);
+
 		//await alter(db);
 	} catch (error) {
 		throw error;
+	}
+};
+
+const deleteDatabase = async () => {
+	try {
+		const dbName = "fuel-log.db";
+		const dbPath = `${FileSystem.documentDirectory}SQLite/${dbName}`;
+
+		// Check if the database exists
+		const dbInfo = await FileSystem.getInfoAsync(dbPath);
+
+		if (dbInfo.exists) {
+			// Delete the database file
+			await FileSystem.deleteAsync(dbPath, { idempotent: true });
+		}
+	} catch (error) {
+		console.error("Error deleting database:", error);
 	}
 };
 
@@ -43,19 +64,21 @@ async function init_fuel_types_table(db) {
 		db,
 		`CREATE TABLE IF NOT EXISTS FUEL_TYPES (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT UNIQUE,
+        name TEXT,
+        short_name TEXT UNIQUE,
         color TEXT
     );`
 	);
-	/*
-  await executeQuery(
-    db,
-    `INSERT OR IGNORE INTO FUEL_TYPES (name, color)
+
+	await executeQuery(
+		db,
+		`INSERT OR IGNORE INTO FUEL_TYPES (name, short_name, color)
       VALUES
-        ('95-ös Benzin', 'green'),
-        ('100-as Benzin', 'green'),
-        ('B7 Dízel', 'black');`
-  ); */
+        ('95-ös Benzin', 'E10', 'green'),
+        ('100-as Benzin', 'E5', 'green'),
+        ('Dízel', 'B7', 'black'),
+        ('Dízel Premium', 'B7P', 'black');`
+	);
 }
 
 async function init_fuelinfo_table(db) {
@@ -79,7 +102,7 @@ async function init_fuelinfo_table(db) {
 }
 
 async function init_cost_types_table(db) {
-	console.info("FUEL_TYPES");
+	console.info("COST_TYPES");
 	await executeQuery(
 		db,
 		` CREATE TABLE IF NOT EXISTS COST_TYPES (
@@ -115,7 +138,7 @@ export function truncate(db) {
 
       DROP TABLE IF EXISTS CARS;
       DROP TABLE IF EXISTS FUEL_LOGS;
-      DROP TABLE IF EXISTS FUEL_TYPES
+      DROP TABLE IF EXISTS FUEL_TYPES;
       DROP TABLE IF EXISTS COST_TYPES;
       DROP TABLE IF EXISTS COSTS;
       `

@@ -1,4 +1,4 @@
-import { Button, Card, H2, Paragraph, XStack } from "tamagui";
+import { Button, Card, H2, H3, Paragraph, View, XStack, YStack } from "tamagui";
 import { Text } from "react-native";
 import { getAllFuelInfo, removeFuelInfo } from "../db/fuelinfo";
 import { ChevronRight, Fuel, Menu, Trash } from "@tamagui/lucide-icons";
@@ -8,6 +8,7 @@ import NotFoundCard from "./notFoundCard";
 import LoadingCard from "./loadingCard";
 import { useState } from "react";
 import { useToastController } from "@tamagui/toast";
+import { styles } from "../styles/global";
 
 export default function FuelList({ route, selectedYear, start, end }) {
 	const { data, isLoading, refetch } = useQuery({
@@ -24,14 +25,19 @@ export default function FuelList({ route, selectedYear, start, end }) {
 		<LoadingCard />
 	) : data && data.length > 0 ? (
 		data.map((fuelInfo: FuelInfoModel) => (
-			<Card size="$4" style={{ borderRadius: 50, margin: 10 }} key={fuelInfo.id}>
+			<Card size="$4" style={{ borderRadius: 80, margin: 10 }} key={fuelInfo.id}>
 				<Card.Header padded>
-					<H2>
-						{fuelInfo.amount} l - {fuelInfo.price} Ft
-					</H2>
-					<H2 textAlign="right" color="gray">
-						{fuelInfo.date}
-					</H2>
+					<YStack gap={5}>
+						<View style={styles.primary} padding={5}>
+							<H2 color={styles.primary.color} textAlign="center">
+								{fuelInfo.amount} l - {fuelInfo.price} Ft
+							</H2>
+						</View>
+
+						<H3 textAlign="center" color="gray">
+							{fuelInfo.date}
+						</H3>
+					</YStack>
 
 					<XStack alignItems="center" gap={5} borderRadius={40} backgroundColor="#eee" margin={10}>
 						<XStack borderRadius={50} padding={10} backgroundColor={fuelInfo.color}>

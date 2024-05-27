@@ -29,7 +29,7 @@ export default function CarsPage({ navigation }: any) {
 
 								<XStack borderRadius={50} padding={10} width={50} height={50} justifyContent="center" alignItems="center" backgroundColor={car.color}>
 									<Text color="white" fontWeight="bold">
-										{car.fuel_type_name.substring(0, 3)}
+										{car.fuel_type_short_name}
 									</Text>
 								</XStack>
 							</XStack>

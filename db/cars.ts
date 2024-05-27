@@ -11,8 +11,6 @@ export const removeCar = (id: number, refetch: Function, showToast: Function) =>
 };
 
 export const getAllCars = (): Promise<CarModel[]> => {
-	return executeQuery<CarModel[]>(
-		db,
-		"SELECT c.id, c.name as name, reg_number, color, f.name as fuel_type_name, f.id as fuel_type_id FROM CARS c INNER JOIN FUEL_TYPES f on c.fuel_type_id = f.id"
-	);
+	const cols = "c.id, c.name as name, reg_number, color, f.name as fuel_type_name, f.id as fuel_type_id, f.short_name as fuel_type_short_name";
+	return executeQuery<CarModel[]>(db, `SELECT ${cols} FROM CARS c INNER JOIN FUEL_TYPES f on c.fuel_type_id = f.id`);
 };

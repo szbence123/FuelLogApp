@@ -54,10 +54,10 @@ export default function App() {
 			<QueryClientProvider client={qc}>
 				<TamaguiProvider config={tamaguiConfig}>
 					<PortalProvider>
-						<ToastProvider>
+						<ToastProvider burntOptions={{ from: "bottom" }}>
 							<StatusBar backgroundColor={styles.primary.backgroundColor} barStyle="light-content" />
 							<AppNavigator />
-							<ToastViewport />
+							<ToastViewport bottom={10} />
 							<InfoToast />
 						</ToastProvider>
 					</PortalProvider>

@@ -38,13 +38,12 @@ export const InfoToast = () => {
 	return (
 		<Toast
 			key={currentToast.id}
-			duration={1300}
+			duration={1800}
 			enterStyle={{ opacity: 0, scale: 0.5, x: 0 }}
 			exitStyle={{ opacity: 0, scale: 1, x: width }}
 			opacity={1}
 			scale={1}
 			x={20}
-			y={height - 40}
 			width={width - 40}
 			animation="100ms"
 			viewportName={currentToast.viewportName}

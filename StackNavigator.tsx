@@ -9,6 +9,7 @@ import React from "react";
 import { FuelLog } from "./components/addFuelLog";
 import AddCarPage from "./components/addCarPage";
 import { RefetchOptions } from "react-query";
+import SettingsPage from "./pages/settings";
 
 const Stack = createNativeStackNavigator();
 
@@ -44,15 +45,23 @@ export function AppNavigator() {
 				<Stack.Screen
 					name="Cars"
 					component={CarsPage}
-					options={{
+					options={({ navigation }) => ({
 						title: "Autóim",
 						headerRight: () => (
 							<XStack>
-								<Button backgroundColor={styles.primary.backgroundColor} onPress={() => {}} color="#fff" size={40} icon={Settings2} />
+								<Button
+									backgroundColor={styles.primary.backgroundColor}
+									onPress={() => {
+										navigation.navigate("Settings");
+									}}
+									color="#fff"
+									size={40}
+									icon={Settings2}
+								/>
 								<AddCarPage openingFromMenuBar={true} />
 							</XStack>
 						)
-					}}
+					})}
 				/>
 				<Stack.Screen
 					name="FuelInfos"
@@ -62,6 +71,13 @@ export function AppNavigator() {
 						headerRight: () => {
 							return <FuelInfosHeaderRight />;
 						}
+					}}
+				/>
+				<Stack.Screen
+					name="Settings"
+					component={SettingsPage}
+					options={{
+						title: "Beállítások"
 					}}
 				/>
 			</Stack.Navigator>

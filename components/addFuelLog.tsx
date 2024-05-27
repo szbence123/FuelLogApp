@@ -110,10 +110,10 @@ export function FuelLog({ carId, fuelTypeId, openingFromMenuBar = false }) {
 										items={fuelTypes.map((f: FuelType): SelectItem => {
 											return {
 												value: f.id.toString(),
-												name: f.name,
+												name: `${f.name} (${f.short_name})`,
 												icon: (
 													<Select.Icon borderRadius={40} backgroundColor={f.color} padding={5}>
-														<Fuel color="white" />
+														<Fuel color={styles.primary.color} />
 													</Select.Icon>
 												)
 											};

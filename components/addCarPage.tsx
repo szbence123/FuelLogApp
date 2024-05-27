@@ -12,6 +12,7 @@ import { FuelType } from "../types/fuelTypes";
 import LoadingCard from "./loadingCard";
 import InputLabel from "./inputLabel";
 import { useToastController } from "@tamagui/toast";
+import { NotificationTypeEnum } from "../types/enums";
 
 export default function AddCarPage({ last = false, isEdit = false, openingFromMenuBar = false }) {
 	const [carName, setCarName] = useState("");
@@ -25,7 +26,7 @@ export default function AddCarPage({ last = false, isEdit = false, openingFromMe
 			insertCar(carName, regNumber, selectedFuelType, toast.show);
 			queryClient.invalidateQueries({ queryKey: ["getAllCars"] });
 		} else {
-			alert("Nem lehet üres");
+			toast.show("Kitöltés kötelező!", { notificationOptions: { tag: NotificationTypeEnum.Danger, icon: NotificationTypeEnum.Danger } });
 		}
 	};
 
@@ -79,7 +80,7 @@ export default function AddCarPage({ last = false, isEdit = false, openingFromMe
 										items={fuelTypes.map((f: FuelType): SelectItem => {
 											return {
 												value: f.id.toString(),
-												name: f.name,
+												name: `${f.name} (${f.short_name})`,
 												icon: (
 													<Select.Icon borderRadius={40} backgroundColor={f.color} padding={5}>
 														<Fuel color="white" />
