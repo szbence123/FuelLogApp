@@ -13,7 +13,7 @@ const tamaguiConfig = createTamagui(config);
 import { preventAutoHideAsync, hideAsync } from "expo-splash-screen";
 import { ToastProvider, ToastViewport } from "@tamagui/toast";
 import { InfoToast } from "./components/toast";
-import * as Updates from "expo-updates";
+
 import { SQLiteProvider } from "expo-sqlite";
 
 type Conf = typeof tamaguiConfig;
@@ -29,14 +29,6 @@ const fetchFonts = async () => {
 };
 
 let qc = new QueryClient();
-
-export const restartApp = async () => {
-	try {
-		await Updates.reloadAsync();
-	} catch (e) {
-		console.error("Failed to reload app:", e);
-	}
-};
 
 export default function App() {
 	const [fontLoaded, setFontLoaded] = useState(false);

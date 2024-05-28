@@ -2,7 +2,7 @@ import { Button, Card, H2, H3, Paragraph, View, XStack, YStack } from "tamagui";
 import { Text } from "react-native";
 import { getAllFuelInfo, removeFuelInfo } from "../db/fuelinfo";
 import { ChevronRight, Fuel, Menu, Trash } from "@tamagui/lucide-icons";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { FuelInfoModel } from "../types/cars";
 import NotFoundCard from "./notFoundCard";
 import LoadingCard from "./loadingCard";
@@ -18,8 +18,15 @@ export default function FuelList({ route, selectedYear, start, end }) {
 		}
 	});
 
+	const queryClient = useQueryClient();
+
 	const [propsOpened, setPropsOpened] = useState(-1);
 	const toast = useToastController();
+
+	const removeFuelLog = (id: number) => {
+		removeFuelInfo(id, toast.show);
+		queryClient.invalidateQueries({ queryKey: ["getAllFuelInfo"] });
+	};
 
 	return isLoading || !data ? (
 		<LoadingCard />
@@ -62,7 +69,7 @@ export default function FuelList({ route, selectedYear, start, end }) {
 							<XStack gap={5}>
 								<Button
 									onPress={() => toast.show("Törléshez nyomd hosszan.")}
-									onLongPress={() => removeFuelInfo(fuelInfo.id, refetch, toast.show)}
+									onLongPress={() => removeFuelLog(fuelInfo.id)}
 									color="red"
 									icon={Trash}
 								>

@@ -22,7 +22,6 @@ import { useToastController } from "@tamagui/toast";
 import { useQueryClient } from "react-query";
 import { styles } from "../styles/global";
 import { NotificationTypeEnum } from "../types/enums";
-import { restartApp } from "../App";
 import { excelExport } from "../db/excelExport";
 
 export default function SettingsPage() {

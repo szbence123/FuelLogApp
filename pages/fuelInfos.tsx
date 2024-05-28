@@ -1,7 +1,7 @@
 import { Button, Input, ScrollView, SizableText, Tabs, View, XStack, YStack } from "tamagui";
 import FuelList from "../components/fuelList";
 import { styles } from "../styles/global";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Charts from "../components/chart";
 import YearSelector from "../components/yearSelector";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -35,6 +35,11 @@ export default function FuelInfosPage({ route }) {
 		setStartDate(currentDate);
 		setStartShowDatePicker(false);
 	};
+
+	useEffect(() => {
+		setStartDate(new Date(parseInt(selectedYear), 0, 1));
+		setEndDate(new Date(parseInt(selectedYear), 11, 31));
+	}, [selectedYear]);
 
 	return (
 		<ScrollView>

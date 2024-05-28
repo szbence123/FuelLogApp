@@ -9,6 +9,7 @@ import LoadingCard from "../components/loadingCard";
 import { styles } from "../styles/global";
 import { useState } from "react";
 import { useToastController } from "@tamagui/toast";
+import { CarModel } from "../types/cars";
 
 export default function CarsPage({ navigation }: any) {
 	const [propsOpened, setPropsOpened] = useState(-1);
@@ -19,7 +20,7 @@ export default function CarsPage({ navigation }: any) {
 	return (
 		<ScrollView>
 			{cars && cars.length > 0 ? (
-				cars.map((car) => (
+				cars.map((car: CarModel) => (
 					<Card margin={10} borderRadius={20} key={car.id}>
 						<Card.Header padded>
 							<XStack justifyContent="space-between">

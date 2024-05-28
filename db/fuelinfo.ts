@@ -1,5 +1,6 @@
 import { FuelInfoModel } from "../types/cars";
 import { db } from "./db";
+import { showSuccessMessage, showErrorMessage } from "./messages";
 
 export const insertFuelInfo = (
 	date: string,
@@ -22,7 +23,9 @@ export const insertFuelInfo = (
 		amount,
 		car_id,
 		fuel_type_id
-	);
+	)
+		.then((_) => showSuccessMessage(showToast))
+		.catch((err) => showErrorMessage(showToast, err));
 };
 
 export const getFuelInfoForExport = () => {
@@ -74,6 +77,9 @@ export const getAllFuelPricesForChart = (carId: number, year: string, start: str
 	);
 };
 
-export const removeFuelInfo = (id: number, refetch: Function, showToast: Function) => {
-	return db.runAsync("DELETE FROM FUEL_LOGS WHERE id = ?", id).then((r) => refetch());
+export const removeFuelInfo = (id: number, showToast: Function) => {
+	return db
+		.runAsync("DELETE FROM FUEL_LOGS WHERE id = ?", id)
+		.then((_) => showSuccessMessage(showToast))
+		.catch((err) => showErrorMessage(showToast, err));
 };

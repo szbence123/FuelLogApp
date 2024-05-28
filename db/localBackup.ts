@@ -4,10 +4,17 @@ import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import moment from "moment";
 import * as DocumentPicker from "expo-document-picker";
-import RNRestart from "react-native-restart";
 import { QueryClient } from "react-query";
 import { NotificationTypeEnum } from "../types/enums";
-import { restartApp } from "../App";
+import * as Updates from "expo-updates";
+
+export const restartApp = async () => {
+	try {
+		await Updates.reloadAsync();
+	} catch (e) {
+		console.error("Failed to reload app:", e);
+	}
+};
 
 export const exportDatabase = async (showToast: Function) => {
 	try {
