@@ -4,7 +4,7 @@ import { ModalProps } from "../types/props";
 
 export default function Modal(props: ModalProps) {
 	return (
-		<Dialog>
+		<Dialog open={props.open}>
 			<Dialog.Trigger asChild>{props.openBtn}</Dialog.Trigger>
 			<Adapt when="sm" platform="touch">
 				<Sheet animation="quick" zIndex={5} modal dismissOnSnapToBottom>

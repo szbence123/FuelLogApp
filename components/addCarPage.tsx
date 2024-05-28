@@ -36,16 +36,25 @@ export default function AddCarPage({ last = false, isEdit = false, openingFromMe
 
 	const onSubmit = async (data) => {
 		console.log(data.name, data.regNumber, data.fuelType, toast.show);
+		closeDialog();
 		await insertCar(data.name, data.regNumber, data.fuelType, toast.show);
 		queryClient.invalidateQueries({ queryKey: ["getAllCars"] });
 	};
 
+	const [isDialogVisible, setDialogVisible] = useState(false);
+	const openDialog = () => {
+		reset();
+		setDialogVisible(true);
+	};
+	const closeDialog = () => setDialogVisible(false);
+
 	return (
 		<Modal
+			open={isDialogVisible}
 			title="Autó hozzáadása"
 			openBtn={
 				openingFromMenuBar ? (
-					<Button backgroundColor={styles.primary.backgroundColor} onPress={reset} color="#fff" size={40} icon={Plus} />
+					<Button backgroundColor={styles.primary.backgroundColor} onPress={openDialog} color="#fff" size={40} icon={Plus} />
 				) : (
 					<Button
 						margin="auto"
@@ -57,7 +66,7 @@ export default function AddCarPage({ last = false, isEdit = false, openingFromMe
 						borderRadius={30}
 						height={50}
 						width={50}
-						onPress={reset}
+						onPress={openDialog}
 					/>
 				)
 			}
@@ -121,16 +130,13 @@ export default function AddCarPage({ last = false, isEdit = false, openingFromMe
 						<Separator margin={30} />
 
 						<XStack alignSelf="flex-end" gap={4}>
-							<Dialog.Close displayWhenAdapted asChild>
-								<Button theme="active" aria-label="Close">
-									Mégsem
-								</Button>
-							</Dialog.Close>
-							<Dialog.Close displayWhenAdapted asChild>
-								<Button onPressIn={handleSubmit(onSubmit)} icon={Save} theme="active" aria-label="Close" style={styles.primary}>
-									Mentés
-								</Button>
-							</Dialog.Close>
+							<Button onPress={closeDialog} theme="active" aria-label="Close">
+								Mégsem
+							</Button>
+
+							<Button onPress={handleSubmit(onSubmit)} icon={Save} theme="active" aria-label="Close" style={styles.primary}>
+								Mentés
+							</Button>
 						</XStack>
 					</ScrollView>
 				) : (

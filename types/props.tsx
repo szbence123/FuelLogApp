@@ -6,6 +6,7 @@ export type ModalProps = {
 	openBtn: React.ReactNode;
 	title: React.ReactNode | string;
 	body: React.ReactNode;
+	open?: boolean;
 };
 
 export type SelectProps = {

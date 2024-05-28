@@ -4,12 +4,12 @@
 		"slug": "fuel-log",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./assets/logo-new.png",
+		"icon": "./assets/icon.png",
 		"userInterfaceStyle": "light",
 		"splash": {
 			"image": "./assets/splashcar.jpg",
 			"resizeMode": "contain",
-			"backgroundColor": "white"
+			"backgroundColor": "#ffffff"
 		},
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
@@ -23,7 +23,7 @@
 			"package": "com.szbence123.fuellog"
 		},
 		"web": {
-			"favicon": "./assets/favicon.png"
+			"favicon": "./assets/icon.png"
 		},
 		"extra": {
 			"eas": {

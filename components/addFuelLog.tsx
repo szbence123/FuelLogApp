@@ -56,8 +56,6 @@ export function FuelLog({ carId, fuelTypeId, openingFromMenuBar = false }) {
 		formState: { errors }
 	} = useForm();
 
-	const [date, setDate] = useState(new Date());
-
 	const [datePickerVisible, setDatePickerVisible] = useState(false);
 	const [mode, setMode] = useState<string>("date");
 
@@ -69,6 +67,13 @@ export function FuelLog({ carId, fuelTypeId, openingFromMenuBar = false }) {
 			}
 		}
 	};
+
+	const [isDialogVisible, setDialogVisible] = useState(false);
+	const openDialog = () => {
+		reset();
+		setDialogVisible(true);
+	};
+	const closeDialog = () => setDialogVisible(false);
 
 	const openDatePicker = (currentMode: any) => {
 		setMode(currentMode);
@@ -91,21 +96,19 @@ export function FuelLog({ carId, fuelTypeId, openingFromMenuBar = false }) {
 			data.fuelType,
 			toast.show
 		);
+		closeDialog();
 		queryClient.invalidateQueries({ queryKey: ["getAllFuelInfo"] });
-	};
-
-	const initForm = () => {
-		reset();
 	};
 
 	return (
 		<Modal
+			open={isDialogVisible}
 			title="Tankolás"
 			openBtn={
 				openingFromMenuBar ? (
-					<Button backgroundColor={styles.primary.backgroundColor} onPress={initForm} color="#fff" size={40} icon={Plus} />
+					<Button backgroundColor={styles.primary.backgroundColor} onPress={openDialog} color="#fff" size={40} icon={Plus} />
 				) : (
-					<Button onPress={initForm} style={styles.primary} width="100%" alignSelf="center" icon={Plus}>
+					<Button onPress={openDialog} style={styles.primary} width="100%" alignSelf="center" icon={Plus}>
 						Tankolás hozzáadása
 					</Button>
 				)
@@ -243,17 +246,13 @@ export function FuelLog({ carId, fuelTypeId, openingFromMenuBar = false }) {
 						</YStack>
 						<Separator margin={30} />
 						<XStack alignSelf="flex-end" gap={4}>
-							<Dialog.Close displayWhenAdapted asChild>
-								<Button theme="active" aria-label="Close">
-									Mégsem
-								</Button>
-							</Dialog.Close>
+							<Button onPress={closeDialog} theme="active" aria-label="Close">
+								Mégsem
+							</Button>
 
-							<Dialog.Close displayWhenAdapted asChild>
-								<Button onPressIn={handleSubmit(onSubmit)} icon={Save} theme="active" aria-label="Close" style={styles.primary}>
-									Mentés
-								</Button>
-							</Dialog.Close>
+							<Button onPress={handleSubmit(onSubmit)} icon={Save} theme="active" aria-label="Close" style={styles.primary}>
+								Mentés
+							</Button>
 						</XStack>
 					</ScrollView>
 				) : (
