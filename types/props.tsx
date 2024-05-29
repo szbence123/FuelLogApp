@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, SetStateAction } from "react";
 import { StyleProp, ViewStyle } from "react-native";
 import { TextStyle } from "tamagui";
 
@@ -7,6 +7,7 @@ export type ModalProps = {
 	title: React.ReactNode | string;
 	body: React.ReactNode;
 	open?: boolean;
+	setOpen?: React.Dispatch<SetStateAction<boolean>>;
 };
 
 export type SelectProps = {

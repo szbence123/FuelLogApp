@@ -51,6 +51,7 @@ export default function AddCarPage({ last = false, isEdit = false, openingFromMe
 	return (
 		<Modal
 			open={isDialogVisible}
+			setOpen={setDialogVisible}
 			title="Autó hozzáadása"
 			openBtn={
 				openingFromMenuBar ? (

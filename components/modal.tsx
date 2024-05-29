@@ -1,13 +1,22 @@
 import { Adapt, Button, Dialog, Sheet, Unspaced } from "tamagui";
 import { X } from "@tamagui/lucide-icons";
 import { ModalProps } from "../types/props";
+import { useEffect, useState } from "react";
 
 export default function Modal(props: ModalProps) {
 	return (
 		<Dialog open={props.open}>
 			<Dialog.Trigger asChild>{props.openBtn}</Dialog.Trigger>
 			<Adapt when="sm" platform="touch">
-				<Sheet animation="quick" zIndex={5} modal dismissOnSnapToBottom>
+				<Sheet
+					onOpenChange={() => {
+						props.setOpen(!props.open);
+						console.log(props.open);
+					}}
+					animation="quicker"
+					zIndex={5}
+					modal
+				>
 					<Sheet.Frame padding="$4" gap="$4">
 						<Adapt.Contents />
 					</Sheet.Frame>

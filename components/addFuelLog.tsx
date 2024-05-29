@@ -103,6 +103,7 @@ export function FuelLog({ carId, fuelTypeId, openingFromMenuBar = false }) {
 	return (
 		<Modal
 			open={isDialogVisible}
+			setOpen={setDialogVisible}
 			title="Tankolás"
 			openBtn={
 				openingFromMenuBar ? (
